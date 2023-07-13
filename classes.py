@@ -35,24 +35,24 @@ class Stock(Base):
     __tablename__ = 'stock'
 
     id = sq.Column(sq.Integer, primary_key=True)
-    id_shop = sq.Column(sq.Integer, sq.ForeignKey('shop.id', ondelete='CASCADE'), unique=True)
-    id_book = sq.Column(sq.Integer, sq.ForeignKey('book.id', ondelete='CASCADE'), unique=True)
+    id_shop = sq.Column(sq.Integer, sq.ForeignKey('shop.id', ondelete='CASCADE'))
+    id_book = sq.Column(sq.Integer, sq.ForeignKey('book.id', ondelete='CASCADE'))
     count = sq.Column(sq.Integer)
 
-    books_stock = relationship(Book, cascade='all,delete', backref='stock1')
-    shops_stock = relationship(Shop, cascade='all,delete', backref='stock2')
+    books_stock = relationship(Book, cascade='all,delete', backref='stocks')
+    shops_stock = relationship(Shop, cascade='all,delete', backref='stocks')
 
 
 class Sale(Base):
     __tablename__ = 'sale'
 
     id = sq.Column(sq.Integer, primary_key=True)
-    price = sq.Column(sq.Integer)
+    price = sq.Column(sq.Numeric(10, 2))
     date_sale = sq.Column(sq.DATE)
     count = sq.Column(sq.Integer)
-    id_stock = sq.Column(sq.Integer, sq.ForeignKey('stock.id', ondelete='CASCADE'), unique=True)
+    id_stock = sq.Column(sq.Integer, sq.ForeignKey('stock.id', ondelete='CASCADE'))
 
-    stock3 = relationship(Stock, cascade='all,delete', backref='sale')
+    stock = relationship(Stock, cascade='all,delete', backref='sales')
 
 
 def create_tables(engine):

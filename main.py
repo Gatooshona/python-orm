@@ -33,12 +33,19 @@ def open_json():
         session.add(model(id=record.get('pk'), **record.get('fields')))
     session.commit()
 
-# def searching(publisher_id):
-    # publisher_subquery = session.query(Publisher).filter(Publisher.name.like(publisher_id)).subquery()
-    # book_subquery = session.query(Book).join(publisher_subquery, Book.id == publisher_subquery.c.id)
-    # print(book_subquery)
-    # stock = session.query(Stock).join(book_subquery, Stock.id ==
+
+def searching():
+    data = input('Input publisher name ')
+    for el in session.query(Book.title, Shop.name, Sale.price, Sale.date_sale)\
+            .join(Publisher)\
+            .join(Stock)\
+            .join(Shop)\
+            .join(Sale)\
+            .filter(Publisher.name == data).all():
+        name_book, name_shop, price, date_sale = el
+        print(f'{name_book} | {name_shop} | {price} | {date_sale}')
 
 
 open_json()
+searching()
 session.close()
